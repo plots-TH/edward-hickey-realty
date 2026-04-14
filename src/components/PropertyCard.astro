@@ -1,0 +1,14 @@
+---
+const { address, price, status, url, image } = Astro.props;
+---
+<a href={url} class="group block border border-gray-100 hover:shadow-xl transition-all duration-300 bg-white">
+  <div class="aspect-[16/10] overflow-hidden bg-gray-200">
+    <img src={image} alt={address} class="w-full h-full object-cover group-hover:scale-105 transition-transform" />
+  </div>
+  <div class="p-6">
+    <span class="text-xs uppercase tracking-widest text-gold-600 font-semibold">{status}</span>
+    <h3 class="text-xl font-serif mt-2 text-gray-900">{address}</h3>
+    <p class="text-gray-600 mt-1">{price}</p>
+    <span class="inline-block mt-4 text-sm font-medium border-b border-black pb-1">View Details</span>
+  </div>
+</a>

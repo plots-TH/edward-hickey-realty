@@ -1,0 +1,28 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+// This allows us to pass a title to any page (Home, Blog, Listings, etc.)
+const { title = "Edward Hickey | Real Estate" } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>{title}</title>
+        </script>
+		<!-- Google Fonts / SEO Tags can go here later -->
+	</head>
+	<body class="bg-white text-slate-900 flex flex-col min-h-screen overflow-x-hidden">
+		<Header />
+		
+		<main class="flex-grow">
+			<slot /> 
+		</main>
+
+		<Footer />
+	</body>
+</html>

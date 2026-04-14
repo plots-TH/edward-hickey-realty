@@ -1,0 +1,30 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PropertyCard from '../components/PropertyCard.astro';
+
+const soldProperties = await getCollection('closed');
+---
+
+<BaseLayout title="Recently Sold | Edward Hickey">
+  <section class="py-20 px-6 max-w-7xl mx-auto min-h-screen">
+    <div class="mb-16 border-b border-gray-100 pb-8">
+      <h1 class="text-5xl font-serif text-gray-900 mb-4">Recently Sold</h1>
+      <p class="text-gray-500 uppercase tracking-widest text-sm">A Track Record of Excellence</p>
+    </div>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+      {soldProperties.map(post => (
+        <PropertyCard 
+          address={post.data.address}
+          price={`Sold for ${post.data.salePrice}`}
+          status="Closed"
+          image={post.data.heroImage || '/images/placeholder.jpg'}
+          url={`/closed/${post.id}`}
+        />
+      ))}
+    </div>
+  </section>
+</BaseLayout>
+
+
