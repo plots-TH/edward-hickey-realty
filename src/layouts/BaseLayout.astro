@@ -10,13 +10,14 @@ const { title = "Edward Hickey | Real Estate" } = Astro.props;
 <!doctype html>
 <html lang="en">
     <head>
-      <meta charset="UTF-8" />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title>{title}</title>
-    
-      <!-- This is the missing piece that creates the login box -->
-      </script>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>{title}</title>
+        
+        <!-- This is the fix. The is:inline is required for Astro -->
+        </script>
     </head>
+
 
 	<body class="bg-white text-slate-900 flex flex-col min-h-screen overflow-x-hidden">
 		<Header />
