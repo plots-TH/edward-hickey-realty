@@ -13,13 +13,13 @@ const allListings = await getCollection('listings');
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
       {allListings.length > 0 ? (
         allListings.map((item) => (
-          <PropertyCard 
-            address={item.data.address}
-            price={item.data.price}
-            status={item.data.status}
-            image={item.data.heroImage || '/images/placeholder.jpg'}
-            url={`/listings/${item.id}`} 
-          />
+            <PropertyCard 
+                address={item.data.address}
+                price={item.data.price}
+                status={item.data.status}
+                image={item.data.heroImage}
+                url={`/listings/${item.id}`} 
+        />
         ))
       ) : (
         <p class="text-gray-500 italic">No active listings at this time. Please check back soon.</p>
