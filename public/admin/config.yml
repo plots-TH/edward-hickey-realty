@@ -9,6 +9,8 @@ collections:
   - name: "listings"
     label: "Active Listings"
     folder: "src/content/listings"
+    identifier_field: "address"
+    slug: "{{address}}"
     create: true
     fields:
       - { label: "Address", name: "address", widget: "string" }
