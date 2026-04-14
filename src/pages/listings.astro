@@ -18,7 +18,7 @@ const allListings = await getCollection('listings');
                 price={item.data.price}
                 status={item.data.status}
                 image={item.data.heroImage}
-                url={`/listings/${item.id}`} 
+                url={`/listings/${item.id || item.slug}`} 
         />
         ))
       ) : (
