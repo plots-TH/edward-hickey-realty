@@ -3,7 +3,6 @@ import { Image } from 'astro:assets';
 const { address, price, status, image, url } = Astro.props;
 ---
 
-<!-- 1. Start at opacity-0 so there is no "flash" before animation -->
 <div class="group relative opacity-0 transform-gpu transition-all duration-1000 translate-y-4" data-property-card>
   <a href={url} class="block">
     <div class="relative aspect-[4/5] overflow-hidden rounded-[2.5rem] md:rounded-[3rem] bg-slate-100 shadow-lg">
@@ -14,8 +13,8 @@ const { address, price, status, image, url } = Astro.props;
           alt="" 
           width={800} 
           height={1000}
-          /* 2. Added object-fit & aspect-ratio directly to stop the snap */
-          class="w-full h-full object-cover aspect-[4/5] grayscale transition-all duration-700 ease-out group-hover:grayscale-0 group-hover:scale-105 transform-gpu will-change-transform"
+          onerror="this.style.opacity='0'"
+          class="w-full h-full aspect-[4/5] object-cover grayscale transition-all duration-700 ease-out group-hover:grayscale-0 group-hover:scale-105 transform-gpu will-change-transform"
           loading="eager"
         />
       ) : (
@@ -40,24 +39,20 @@ const { address, price, status, image, url } = Astro.props;
 </div>
 
 <script is:inline>
-  /**
-   * BACK-BUTTON REVEAL LOGIC
-   * This script runs immediately on every page visit, even from cache.
-   */
   function revealCards() {
     const cards = document.querySelectorAll('[data-property-card]');
     cards.forEach((card, index) => {
       setTimeout(() => {
         card.style.opacity = "1";
         card.style.transform = "translateY(0)";
-      }, index * 100); // Staggered entrance for luxury feel
+      }, index * 100);
     });
   }
 
-  // Handle both standard loads and the "Back" button (pageshow)
   window.addEventListener('pageshow', revealCards);
   document.addEventListener('astro:page-load', revealCards);
 </script>
+
 
 
 
