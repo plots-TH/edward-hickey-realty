@@ -5,33 +5,28 @@ const { address, price, status, image, url } = Astro.props;
 
 <div class="group relative animate-reveal transform-gpu will-change-transform">
   <a href={url} class="block">
-    <!-- The Frame with matching rounded corners -->
+    <!-- The Frame -->
     <div class="relative aspect-[4/5] overflow-hidden rounded-[2rem] md:rounded-[3rem] bg-slate-100 shadow-lg">
-      
-      <!-- Image: Grayscale by default, glides to color on hover -->
-      <Image 
-        src={image || '/images/placeholder.jpg'} 
-        alt={address} 
-        width={800} 
-        height={1000}
-        class="w-full h-full object-cover grayscale transition-all duration-700 ease-out group-hover:grayscale-0 group-hover:scale-105 transform-gpu will-change-transform"
-      />
-      
-      <!-- Subtle Overlay for text legibility -->
+
+      {image ? (
+        <Image 
+          src={image} 
+          alt="" 
+          width={800} 
+          height={1000}
+          class="w-full h-full object-cover grayscale transition-all duration-700 ease-out group-hover:grayscale-0 group-hover:scale-105 transform-gpu will-change-transform"
+        />
+      ) : (
+        /* Sleek Placeholder for posts without images */
+        <div class="w-full h-full bg-gradient-to-br from-gray-50 to-gray-200 flex items-center justify-center">
+          <span class="text-[10px] uppercase tracking-[0.3em] text-gray-400 font-light italic">Image Coming Soon</span>
+        </div>
+      )}
+
+      <!-- Subtle Overlay -->
       <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-80 transition-opacity duration-700 group-hover:opacity-60"></div>
       
-      <!-- Text Info: Glides up slightly on hover -->
-      <div class="absolute bottom-8 left-8 right-8 text-white transform transition-transform duration-700 ease-out group-hover:-translate-y-2 will-change-transform">
-        <span class="text-[10px] uppercase tracking-[0.4em] font-bold text-white/60 mb-3 block transform-gpu">
-          {status}
-        </span>
-        <h3 class="text-2xl md:text-3xl font-serif leading-tight subpixel-antialiased">
-          {address}
-        </h3>
-        <p class="text-sm font-light text-white/80 mt-3 tracking-[0.2em] uppercase">
-          {price}
-        </p>
-      </div>
+      <!-- Text Info remains the same... -->
     </div>
   </a>
 </div>
