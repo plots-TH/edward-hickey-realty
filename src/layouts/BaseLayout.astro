@@ -13,6 +13,9 @@ const { title = "Edward Hickey | Real Estate" } = Astro.props;
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>{title}</title>
 
+		
+		</script>
+
 		<ClientRouter />
 
 		<!-- SEO & Social Sharing -->
@@ -25,10 +28,7 @@ const { title = "Edward Hickey | Real Estate" } = Astro.props;
 		<!-- Favicon -->
 		<link rel="icon" type="image/png" href="/favicon.png" />
 
-		
-		</script>
-		
-		
+		<!-- 2. The script that handles the login redirect -->
 		<script is:inline>
 			if (window.netlifyIdentity) {
 				window.netlifyIdentity.on("init", (user) => {
@@ -49,5 +49,7 @@ const { title = "Edward Hickey | Real Estate" } = Astro.props;
 		<Footer />
 	</body>
 </html>
+
+
 
 
