@@ -13,7 +13,7 @@ const { title = "Edward Hickey | Real Estate" } = Astro.props;
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>{title}</title>
 
-		<!-- 1. The Widget must be the FIRST thing in the head -->
+		<!-- 1. The ACTUAL Library - Critical to have this here -->
 		</script>
 
 		<ClientRouter />
@@ -28,34 +28,33 @@ const { title = "Edward Hickey | Real Estate" } = Astro.props;
 		</main>
 		<Footer />
 
-		<!-- 2. This script runs at the BOTTOM to handle the invite pop-up -->
-<script is:inline>
-  // This function handles the logic
-  function initIdentity() {
-    if (window.netlifyIdentity) {
-      // 1. Listen for the 'init' event - this is the most reliable way
-      window.netlifyIdentity.on("init", user => {
-        if (!user) {
-          // If there's an invite token in the URL, force the signup modal
-          if (window.location.hash.includes("invite_token")) {
-            window.netlifyIdentity.open("signup");
-          }
-          
-          // Handle redirect after they eventually set their password/login
-          window.netlifyIdentity.on("login", () => {
-            document.location.href = "/admin/";
-          });
-        }
-      });
-    }
-  }
+		<!-- 2. Logic to catch the invite token and open the password modal -->
+		<script is:inline>
+			function initIdentity() {
+				if (window.netlifyIdentity) {
+					window.netlifyIdentity.on("init", user => {
+						if (!user) {
+							// Check if the URL contains the invite token
+							if (window.location.hash.includes("invite_token")) {
+								// Open the signup/password creation modal immediately
+								window.netlifyIdentity.open("signup");
+							}
+							
+							// Redirect to admin after they finish setting the password
+							window.netlifyIdentity.on("login", () => {
+								document.location.href = "/admin/";
+							});
+						}
+					});
+				}
+			}
 
-  // Run immediately
-  initIdentity();
-  
-  // Re-run for Astro's ClientRouter navigation
-  document.addEventListener('astro:page-load', initIdentity);
-</script>
-
+			// Run on initial page load
+			initIdentity();
+			
+			// Re-run for Astro's ClientRouter navigation so it works on back/forward
+			document.addEventListener('astro:page-load', initIdentity);
+		</script>
 	</body>
 </html>
+
