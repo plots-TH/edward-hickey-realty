@@ -3,10 +3,9 @@ import { Image } from 'astro:assets';
 const { address, price, status, image, url } = Astro.props;
 ---
 
-<!-- Added "opacity-0" and "data-animate" to ensure smooth re-entry on back button -->
 <div class="group relative opacity-0 animate-reveal transform-gpu will-change-transform" data-animate>
   <a href={url} class="block">
-    <!-- The Frame with matching rounded corners -->
+    <!-- The Frame -->
     <div class="relative aspect-[4/5] overflow-hidden rounded-[2.5rem] md:rounded-[3rem] bg-slate-100 shadow-lg">
       
       {image ? (
@@ -15,7 +14,6 @@ const { address, price, status, image, url } = Astro.props;
           alt="" 
           width={800} 
           height={1000}
-          /* Added aspect-[4/5] and loading="eager" to stop the "thin-to-thick" snapping */
           class="w-full h-full aspect-[4/5] object-cover grayscale transition-all duration-700 ease-out group-hover:grayscale-0 group-hover:scale-105 transform-gpu will-change-transform"
           loading="eager"
         />
@@ -23,10 +21,10 @@ const { address, price, status, image, url } = Astro.props;
         <div class="w-full h-full bg-gradient-to-br from-gray-100 to-gray-300"></div>
       )}
       
-      <!-- Subtle Overlay for text legibility -->
+      <!-- Subtle Overlay -->
       <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-90 transition-opacity duration-700 group-hover:opacity-70"></div>
       
-      <!-- Text Info: Glides up slightly on hover -->
+      <!-- Text Info -->
       <div class="absolute bottom-10 left-8 right-8 text-white transform transition-transform duration-700 ease-out group-hover:-translate-y-2 will-change-transform">
         <span class="text-[10px] uppercase tracking-[0.4em] font-bold text-white/50 mb-3 block transform-gpu">
           {status}
@@ -43,31 +41,21 @@ const { address, price, status, image, url } = Astro.props;
 </div>
 
 <script>
-  /**
-   * RE-ANIMATE ON BACK BUTTON
-   * This ensures that when a user clicks 'Back', the cards don't just sit there static.
-   * It finds everything marked with 'data-animate' and restarts the reveal.
-   */
   const triggerAnimations = () => {
     const animElements = document.querySelectorAll('[data-animate]');
     animElements.forEach((el) => {
-      // Remove class to reset state
       el.classList.remove('animate-reveal');
       el.classList.add('opacity-0');
-      
-      // Force a "reflow" so the browser recognizes the class removal
       void (el as HTMLElement).offsetWidth; 
-      
-      // Re-apply the animation
       el.classList.add('animate-reveal');
       el.classList.remove('opacity-0');
     });
   };
 
-  // Listen for both standard page loads and Astro's view transitions
   document.addEventListener('astro:page-load', triggerAnimations);
   document.addEventListener('astro:after-swap', triggerAnimations);
 </script>
+
 
 
 
