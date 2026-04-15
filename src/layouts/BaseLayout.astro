@@ -27,6 +27,19 @@ const { title = "Edward Hickey | Real Estate" } = Astro.props;
 
 		
 		</script>
+		
+		
+		<script is:inline>
+			if (window.netlifyIdentity) {
+				window.netlifyIdentity.on("init", (user) => {
+					if (!user) {
+						window.netlifyIdentity.on("login", () => {
+							document.location.href = "/admin/";
+						});
+					}
+				});
+			}
+		</script>
 	</head>
 	<body class="bg-white text-slate-900 flex flex-col min-h-screen overflow-x-hidden">
 		<Header />
@@ -36,4 +49,5 @@ const { title = "Edward Hickey | Real Estate" } = Astro.props;
 		<Footer />
 	</body>
 </html>
+
 
