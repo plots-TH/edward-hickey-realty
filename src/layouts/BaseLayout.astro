@@ -10,8 +10,19 @@ const { title = "Edward Hickey | Real Estate" } = Astro.props;
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>{title}</title>
-		<!-- This is the "Engine" for the login box -->
-		<script is:inline src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+
+		<!-- SEO & Social Sharing -->
+		<meta name="description" content="Edward Hickey - Luxury Real Estate Associate Broker at Compass. Specializing in bespoke Manhattan property portfolios and market insights." />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content="Edward Hickey - Luxury Real Estate Associate Broker at Compass." />
+		<meta property="og:image" content="/favicon.png" />
+		<meta property="og:type" content="website" />
+
+		<!-- Favicon -->
+		<link rel="icon" type="image/png" href="/favicon.png" />
+
+		
+		</script>
 	</head>
 	<body class="bg-white text-slate-900 flex flex-col min-h-screen overflow-x-hidden">
 		<Header />
@@ -21,5 +32,3 @@ const { title = "Edward Hickey | Real Estate" } = Astro.props;
 		<Footer />
 	</body>
 </html>
-
-<!-- Force Update 1 -->
