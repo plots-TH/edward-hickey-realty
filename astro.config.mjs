@@ -4,10 +4,11 @@ import netlify from "@astrojs/netlify";
 import sitemap from "@astrojs/sitemap";
 
 export default defineConfig({
-  site: "https://netlify.app", // Use this for now
+  site: "https://edwardhickeyrealty.netlify.app", // Removed the trailing slash here too
   integrations: [tailwind(), sitemap()],
   adapter: netlify(),
   image: {
-    domains: ["upload.wikimedia.org", "://compass.com"],
+    // Just the domain names, no http or slashes
+    domains: ["upload.wikimedia.org", "images.compass.com"],
   },
 });
