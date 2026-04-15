@@ -2,6 +2,8 @@
 import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import { ClientRouter } from 'astro:transitions';
+
 const { title = "Edward Hickey | Real Estate" } = Astro.props;
 ---
 <!doctype html>
@@ -10,6 +12,8 @@ const { title = "Edward Hickey | Real Estate" } = Astro.props;
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>{title}</title>
+
+		<ClientRouter />
 
 		<!-- SEO & Social Sharing -->
 		<meta name="description" content="Edward Hickey - Luxury Real Estate Associate Broker at Compass. Specializing in bespoke Manhattan property portfolios and market insights." />
@@ -32,3 +36,4 @@ const { title = "Edward Hickey | Real Estate" } = Astro.props;
 		<Footer />
 	</body>
 </html>
+

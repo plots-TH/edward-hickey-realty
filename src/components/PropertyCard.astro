@@ -3,9 +3,9 @@ import { Image } from 'astro:assets';
 const { address, price, status, image, url } = Astro.props;
 ---
 
-<div class="group relative opacity-0 animate-reveal transform-gpu will-change-transform" data-animate>
+<!-- 1. Start at opacity-0 so there is no "flash" before animation -->
+<div class="group relative opacity-0 transform-gpu transition-all duration-1000 translate-y-4" data-property-card>
   <a href={url} class="block">
-    <!-- The Frame -->
     <div class="relative aspect-[4/5] overflow-hidden rounded-[2.5rem] md:rounded-[3rem] bg-slate-100 shadow-lg">
       
       {image ? (
@@ -14,17 +14,16 @@ const { address, price, status, image, url } = Astro.props;
           alt="" 
           width={800} 
           height={1000}
-          class="w-full h-full aspect-[4/5] object-cover grayscale transition-all duration-700 ease-out group-hover:grayscale-0 group-hover:scale-105 transform-gpu will-change-transform"
+          /* 2. Added object-fit & aspect-ratio directly to stop the snap */
+          class="w-full h-full object-cover aspect-[4/5] grayscale transition-all duration-700 ease-out group-hover:grayscale-0 group-hover:scale-105 transform-gpu will-change-transform"
           loading="eager"
         />
       ) : (
         <div class="w-full h-full bg-gradient-to-br from-gray-100 to-gray-300"></div>
       )}
       
-      <!-- Subtle Overlay -->
       <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-90 transition-opacity duration-700 group-hover:opacity-70"></div>
       
-      <!-- Text Info -->
       <div class="absolute bottom-10 left-8 right-8 text-white transform transition-transform duration-700 ease-out group-hover:-translate-y-2 will-change-transform">
         <span class="text-[10px] uppercase tracking-[0.4em] font-bold text-white/50 mb-3 block transform-gpu">
           {status}
@@ -40,21 +39,26 @@ const { address, price, status, image, url } = Astro.props;
   </a>
 </div>
 
-<script>
-  const triggerAnimations = () => {
-    const animElements = document.querySelectorAll('[data-animate]');
-    animElements.forEach((el) => {
-      el.classList.remove('animate-reveal');
-      el.classList.add('opacity-0');
-      void (el as HTMLElement).offsetWidth; 
-      el.classList.add('animate-reveal');
-      el.classList.remove('opacity-0');
+<script is:inline>
+  /**
+   * BACK-BUTTON REVEAL LOGIC
+   * This script runs immediately on every page visit, even from cache.
+   */
+  function revealCards() {
+    const cards = document.querySelectorAll('[data-property-card]');
+    cards.forEach((card, index) => {
+      setTimeout(() => {
+        card.style.opacity = "1";
+        card.style.transform = "translateY(0)";
+      }, index * 100); // Staggered entrance for luxury feel
     });
-  };
+  }
 
-  document.addEventListener('astro:page-load', triggerAnimations);
-  document.addEventListener('astro:after-swap', triggerAnimations);
+  // Handle both standard loads and the "Back" button (pageshow)
+  window.addEventListener('pageshow', revealCards);
+  document.addEventListener('astro:page-load', revealCards);
 </script>
+
 
 
 
