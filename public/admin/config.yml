@@ -27,7 +27,10 @@ collections:
   - name: "closed"
     label: "Recently Sold"
     folder: "src/content/closed"
+    identifier_field: "address" 
+    slug: "{{address}}"         
     create: true
+    slug: "{{address}}"
     fields:
       - { label: "Address", name: "address", widget: "string" }
       - { label: "Sale Price", name: "salePrice", widget: "string" }
@@ -38,6 +41,8 @@ collections:
   - name: "blog"
     label: "Market Insights"
     folder: "src/content/blog"
+    identifier_field: "title"  
+    slug: "{{slug}}"
     create: true
     fields:
       - { label: "Title", name: "title", widget: "string" }
