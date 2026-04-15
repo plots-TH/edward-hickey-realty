@@ -1,8 +1,7 @@
 import { defineCollection, z } from "astro:content";
-import { glob } from "astro/loaders"; // 1. Add this import
+import { glob } from "astro/loaders";
 
 const blog = defineCollection({
-  // 2. Add the loader for each collection
   loader: glob({ pattern: "**/[^_]*.md", base: "./src/content/blog" }),
   schema: z.object({
     title: z.string(),
@@ -22,6 +21,7 @@ const listings = defineCollection({
     baths: z.number().optional(),
     status: z.string(),
     heroImage: z.string().optional(),
+    gallery: z.array(z.string()).optional(), // Added gallery array
   }),
 });
 
@@ -32,6 +32,7 @@ const closed = defineCollection({
     salePrice: z.string(),
     closedDate: z.coerce.date(),
     heroImage: z.string().optional(),
+    gallery: z.array(z.string()).optional(), // Added gallery array
   }),
 });
 

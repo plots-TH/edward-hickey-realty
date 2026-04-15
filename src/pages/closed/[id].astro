@@ -3,8 +3,13 @@ import { getCollection, render } from 'astro:content';
 import { Image } from 'astro:assets';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 
+// Swiper styles
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+
 export async function getStaticPaths() {
-  const listings = await getCollection('closed'); // Swap to 'closed' for the sold page
+  const listings = await getCollection('listings');
   return listings.map((item) => ({
     params: { id: item.id },
     props: { item },
@@ -13,33 +18,42 @@ export async function getStaticPaths() {
 
 const { item } = Astro.props;
 const { Content } = await render(item);
+
+// Combine hero image and gallery for the slider
+const allImages = [item.data.heroImage, ...(item.data.gallery || [])].filter(Boolean);
 ---
 
 <BaseLayout title={`${item.data.address} | Edward Hickey`}>
   <article class="py-20 px-6 max-w-6xl mx-auto animate-reveal">
-    
-    <!-- Hero Header -->
+    <!-- Header -->
     <div class="text-center mb-16">
       <span class="text-[10px] uppercase tracking-[0.4em] font-bold text-gray-400 mb-4 block">
         {item.data.status || 'Recently Sold'}
       </span>
       <h1 class="text-5xl md:text-7xl font-serif text-gray-900 mb-6">{item.data.address}</h1>
       <p class="text-xl md:text-2xl font-light text-gray-500 tracking-widest uppercase">
-        {item.data.salePrice|| `Sold for ${item.data.salePrice}`}
+        {item.data.price || `Sold for ${item.data.price}`}
       </p>
     </div>
 
-    <!-- Rounded Big Image -->
-    <div class="relative h-[50vh] md:h-[70vh] overflow-hidden rounded-[2rem] md:rounded-[4rem] shadow-2xl mb-20 bg-slate-50">
-      {item.data.heroImage && (
-        <Image 
-          src={item.data.heroImage} 
-          alt={item.data.address}
-          width={1920}
-          height={1080}
-          class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-1000"
-        />
-      )}
+    <!-- SWIPER CAROUSEL -->
+    <div class="swiper property-carousel rounded-[2rem] md:rounded-[4rem] shadow-2xl mb-20 bg-slate-50 overflow-hidden h-[50vh] md:h-[75vh]">
+      <div class="swiper-wrapper">
+        {allImages.map((img) => (
+          <div class="swiper-slide">
+            <img 
+              src={img} 
+              alt={item.data.address} 
+              class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-1000" 
+            />
+          </div>
+        ))}
+      </div>
+      
+      <!-- Navigation -->
+      <div class="swiper-button-next !text-white !opacity-40 hover:!opacity-100 transition"></div>
+      <div class="swiper-button-prev !text-white !opacity-40 hover:!opacity-100 transition"></div>
+      <div class="swiper-pagination"></div>
     </div>
 
     <!-- Content Grid -->
@@ -48,7 +62,6 @@ const { Content } = await render(item);
         <Content />
       </div>
       
-      <!-- Sticky Sidebar -->
       <aside class="h-fit sticky top-32">
         <div class="border border-gray-100 p-10 rounded-[2rem] bg-white shadow-sm text-center">
           <h3 class="text-xl font-serif mb-4">Inquire</h3>
@@ -61,6 +74,31 @@ const { Content } = await render(item);
     </div>
   </article>
 </BaseLayout>
+
+<script>
+  import Swiper from 'swiper';
+  import { Navigation, Pagination, Autoplay } from 'swiper/modules';
+
+  function initSwiper() {
+    new Swiper('.property-carousel', {
+      modules: [Navigation, Pagination, Autoplay],
+      loop: true,
+      speed: 1200,
+      autoplay: { delay: 5000, disableOnInteraction: false },
+      navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
+      pagination: { el: '.swiper-pagination', clickable: true },
+    });
+  }
+
+  // Runs on initial load and navigation
+  document.addEventListener('astro:page-load', initSwiper);
+</script>
+
+<style>
+  :global(.swiper-pagination-bullet) { background: #fff; opacity: 0.5; }
+  :global(.swiper-pagination-bullet-active) { background: #fff; opacity: 1; }
+</style>
+
 
 
 

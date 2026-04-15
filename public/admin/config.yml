@@ -1,10 +1,8 @@
 backend:
   name: git-gateway
-  branch: main # Ensure this matches your GitHub branch
-
-media_folder: "public/images" # Where uploaded photos go
+  branch: main
+media_folder: "public/images"
 public_folder: "/images"
-
 collections:
   - name: "listings"
     label: "Active Listings"
@@ -21,27 +19,36 @@ collections:
           widget: "select",
           options: ["Active", "In Contract"],
         }
-      - { label: "Hero Image", name: "heroImage", widget: "image" }
+      - { label: "Hero Image (Cover)", name: "heroImage", widget: "image" }
+      - label: "Gallery Images"
+        name: "gallery"
+        widget: "list"
+        summary: "{{fields.image}}"
+        field: { label: "Image", name: "image", widget: "image" }
       - { label: "Body", name: "body", widget: "markdown" }
 
   - name: "closed"
     label: "Recently Sold"
     folder: "src/content/closed"
-    identifier_field: "address" 
-    slug: "{{address}}"         
-    create: true
+    identifier_field: "address"
     slug: "{{address}}"
+    create: true
     fields:
       - { label: "Address", name: "address", widget: "string" }
       - { label: "Sale Price", name: "salePrice", widget: "string" }
       - { label: "Closed Date", name: "closedDate", widget: "datetime" }
-      - { label: "Hero Image", name: "heroImage", widget: "image" }
+      - { label: "Hero Image (Cover)", name: "heroImage", widget: "image" }
+      - label: "Gallery Images"
+        name: "gallery"
+        widget: "list"
+        summary: "{{fields.image}}"
+        field: { label: "Image", name: "image", widget: "image" }
       - { label: "Body", name: "body", widget: "markdown" }
 
   - name: "blog"
     label: "Market Insights"
     folder: "src/content/blog"
-    identifier_field: "title"  
+    identifier_field: "title"
     slug: "{{slug}}"
     create: true
     fields:
