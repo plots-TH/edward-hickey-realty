@@ -1,5 +1,5 @@
 ---
-// Clean slate - No imports needed for now
+// Clean slate - No imports needed
 ---
 <header class="bg-white border-b border-gray-50 sticky top-0 z-50">
   <nav class="max-w-7xl mx-auto px-6 lg:px-8">
@@ -7,40 +7,43 @@
       
       <!-- Brand/Logo Area -->
       <div class="flex-shrink-0 flex items-center space-x-4">
-        <!-- Edward Hickey Link -->
-        <a href="/" class="text-2xl font-bold tracking-tight text-black transition-all duration-500 hover:scale-105 hover:opacity-70 block transform-gpu will-change-transform">
+        <a href="/" class="text-2xl font-bold tracking-tight text-black transition-all duration-500 hover:scale-105 hover:opacity-70 transform-gpu will-change-transform">
           EDWARD <span class="font-light text-gray-400">HICKEY</span>
         </a>
         
         <div class="h-6 w-px bg-gray-200 hidden sm:block"></div>
         
-        <!-- Compass Link -->
-        <a href="https://compass.com" target="_blank" class="hidden sm:flex items-center transition-all duration-500 hover:scale-110 hover:opacity-60 transform-gpu will-change-transform">
-          <img src="https://wikimedia.org" alt="Compass" class="h-[12px] brightness-0" />
+        <!-- Compass Official Link -->
+        <a 
+          href="https://compass.com" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          class="hidden sm:flex items-center transition-all duration-500 hover:scale-110 hover:opacity-60 transform-gpu will-change-transform"
+        >
+          <img 
+            src="https://wikimedia.org" 
+            alt="Compass" 
+            class="h-[12px] brightness-0" 
+          />
         </a>
       </div>
 
-      <!-- Navigation Links -->
-        <div class="hidden md:flex space-x-10 items-center">
-          {['About', 'Listings', 'Recently Sold', 'Insights'].map((link) => (
-            <a 
-              href={`/${link.toLowerCase().replace(' ', '')}`} 
-              class="text-[10px] uppercase tracking-[0.2em] font-bold text-gray-400 transition-all duration-700 ease-out hover:text-black hover:scale-105 block transform-gpu will-change-transform subpixel-antialiased"
-            >
-              {link}
-            </a>
-          ))}
-
-          <!-- Inquire Button -->
-          <a href="/contact" class="bg-black text-white px-8 py-3 rounded-full text-[10px] uppercase tracking-[0.2em] font-bold transition-all duration-700 ease-out hover:bg-gray-800 hover:scale-105 hover:shadow-xl active:scale-95 transform-gpu will-change-transform">
-            Inquire
-          </a>
-        </div>
-
+      <!-- Main Navigation Links -->
+      <div class="hidden md:flex space-x-10 items-center">
+        <a href="/about" class="text-[10px] uppercase tracking-[0.2em] font-bold text-gray-400 transition-all duration-700 hover:text-black hover:scale-105 transform-gpu will-change-transform">About</a>
+        <a href="/listings" class="text-[10px] uppercase tracking-[0.2em] font-bold text-gray-400 transition-all duration-700 hover:text-black hover:scale-105 transform-gpu will-change-transform">Listings</a>
+        <a href="/closed" class="text-[10px] uppercase tracking-[0.2em] font-bold text-gray-400 transition-all duration-700 hover:text-black hover:scale-105 transform-gpu will-change-transform">Recently Sold</a>
+        <a href="/blog" class="text-[10px] uppercase tracking-[0.2em] font-bold text-gray-400 transition-all duration-700 hover:text-black hover:scale-105 transform-gpu will-change-transform">Insights</a>
+        
+        <a href="/contact" class="bg-black text-white px-8 py-3 rounded-full text-[10px] uppercase tracking-[0.2em] font-bold transition-all duration-700 hover:bg-gray-800 hover:scale-105 hover:shadow-xl active:scale-95 transform-gpu will-change-transform">
+          Inquire
+        </a>
+      </div>
       
     </div>
   </nav>
 </header>
+
 
 
 
