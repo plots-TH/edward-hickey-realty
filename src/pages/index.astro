@@ -1,55 +1,48 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 ---
 
-<BaseLayout title={SITE_TITLE} description={SITE_DESCRIPTION}>
-  <section class="relative left-1/2 -ml-[50vw] w-screen bg-white py-12 md:py-24 lg:py-32 overflow-hidden">
-    <div class="max-w-7xl mx-auto px-6 lg:px-12">
+<BaseLayout title="Edward Hickey | Real Estate">
+  <!-- Hero Container -->
+  <section class="bg-white py-12 md:py-20 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto">
       
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+      <!-- The Frame -->
+      <div class="relative h-[70vh] md:h-[85vh] w-full overflow-hidden rounded-[2rem] md:rounded-[4rem] bg-slate-100 shadow-2xl animate-reveal">
         
-        <div class="lg:col-span-8 flex flex-col items-start order-2 lg:order-1">
-          <span class="block text-[10px] md:text-xs uppercase tracking-[0.4em] text-stone-500 font-bold mb-6">
-            Licensed Associate Real Estate Broker
+        <!-- Image with subtle zoom -->
+        <img 
+          src="/images/hero-bg.jpg" 
+          alt="Manhattan Luxury" 
+          class="w-full h-full object-cover grayscale brightness-75 transition-transform duration-[3000ms] hover:scale-105"
+        />
+
+        <!-- Overlay Text -->
+        <div class="absolute inset-0 flex flex-col items-center justify-center text-center p-6 bg-black/20">
+          <span class="text-white/80 uppercase tracking-[0.4em] text-[10px] md:text-xs mb-6 animate-reveal delay-1">
+            Manhattan • Brooklyn • The Hamptons
           </span>
           
-          <h1 class="font-serif text-gray-950 leading-[1.05] text-5xl md:text-7xl xl:text-8xl mb-8">
-            Defining <span class="italic text-stone-500">Modern Living</span> in Manhattan.
+          <h1 class="text-white text-5xl md:text-8xl font-serif mb-10 leading-[1.1] animate-reveal delay-2">
+            Modern Luxury <br /> 
+            <span class="font-light italic text-white/90">Defined</span>
           </h1>
 
-          <p class="text-stone-600 text-lg md:text-xl leading-relaxed max-w-[45ch] mb-10">
-            Bespoke real estate services for the discerning New Yorker. From historic brownstones to sky-high penthouses.
-          </p>
-
-          <div class="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
-            <a href="/contact" class="flex justify-center items-center bg-[#0f172a] text-white px-10 py-4 uppercase tracking-widest text-[11px] font-bold hover:bg-slate-800 transition-all min-w-[200px]">
-              Contact Edward
+          <div class="flex flex-col sm:flex-row gap-6 animate-reveal delay-2" style="animation-delay: 0.6s;">
+            <a href="/listings" class="bg-white text-black px-12 py-4 text-[10px] uppercase tracking-[0.2em] font-bold hover:bg-black hover:text-white transition-all duration-500 rounded-full">
+              Explore Portfolio
             </a>
-            <a href="/listings" class="flex justify-center items-center border border-stone-200 text-stone-900 px-10 py-4 uppercase tracking-widest text-[11px] font-bold hover:border-black transition-all min-w-[200px]">
-              View Portfolio
+            <a href="/contact" class="backdrop-blur-md bg-white/10 border border-white/30 text-white px-12 py-4 text-[10px] uppercase tracking-[0.2em] font-bold hover:bg-white hover:text-black transition-all duration-500 rounded-full">
+              Private Inquiry
             </a>
           </div>
         </div>
-
-        <div class="lg:col-span-4 flex justify-center lg:justify-end order-1 lg:order-2">
-          <div class="relative w-full max-w-[380px] lg:max-w-none">
-            <div class="absolute inset-0 bg-stone-100 translate-x-4 translate-y-4 -z-10"></div>
-            
-            <div class="aspect-[4/5] w-full overflow-hidden bg-white border border-stone-100 shadow-2xl">
-              <img 
-                src="/images/edward_headshot.jpg" 
-                alt="Edward Hickey" 
-                class="w-full h-full object-cover grayscale-[10%]" 
-              />
-            </div>
-          </div>
-        </div>
-
       </div>
+      
     </div>
   </section>
 </BaseLayout>
+
 
 
 
