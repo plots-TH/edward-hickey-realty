@@ -1,37 +1,49 @@
-		
-		</script>
-		
-		
-		<script is:inline>
-			function handleIdentity() {
-				if (window.netlifyIdentity) {
-					// 1. Handle normal login redirects
-					window.netlifyIdentity.on("init", (user) => {
-						if (!user) {
-							window.netlifyIdentity.on("login", () => {
-								document.location.href = "/admin/";
-							});
-						}
-					});
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { ClientRouter } from 'astro:transitions';
 
-					// 2. FORCE opening the signup modal if an invite token is present
-					const hash = window.location.hash;
-					if (hash && hash.includes("invite_token")) {
-						// Small timeout to let the widget fully initialize
-						setTimeout(() => {
-							window.netlifyIdentity.open("signup");
-						}, 500);
+const { title = "Edward Hickey | Real Estate" } = Astro.props;
+---
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>{title}</title>
+
+		<!-- 1. The Widget must be the FIRST thing in the head -->
+		</script>
+
+		<ClientRouter />
+
+		<meta name="description" content="Edward Hickey - Luxury Real Estate Associate Broker at Compass." />
+		<link rel="icon" type="image/png" href="/favicon.png" />
+	</head>
+	<body class="bg-white text-slate-900 flex flex-col min-h-screen">
+		<Header />
+		<main class="flex-grow">
+			<slot />
+		</main>
+		<Footer />
+
+		<!-- 2. This script runs at the BOTTOM to handle the invite pop-up -->
+		<script is:inline>
+			if (window.netlifyIdentity) {
+				window.netlifyIdentity.on("init", user => {
+					if (!user) {
+						window.netlifyIdentity.on("login", () => {
+							document.location.href = "/admin/";
+						});
 					}
+				});
+				
+				// Force the modal to open if there is an invite token
+				if (window.location.hash.includes("invite_token")) {
+					window.netlifyIdentity.open("signup");
 				}
 			}
-
-			// Run on load
-			handleIdentity();
-			// Re-run for Astro's ClientRouter navigation
-			document.addEventListener('astro:page-load', handleIdentity);
 		</script>
-
-
-
-
-
+	</body>
+</html>
