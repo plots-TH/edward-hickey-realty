@@ -9,8 +9,8 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
 export async function getStaticPaths() {
-  const listings = await getCollection('listings');
-  return listings.map((item) => ({
+  const closed = await getCollection('closed');
+  return closed.map((item) => ({
     params: { id: item.id },
     props: { item },
   }));
@@ -23,16 +23,16 @@ const { Content } = await render(item);
 const allImages = [item.data.heroImage, ...(item.data.gallery || [])].filter(Boolean);
 ---
 
-<BaseLayout title={`${item.data.address} | Edward Hickey`}>
+<BaseLayout title={`${item.data.address} | Recently Sold | Edward Hickey`}>
   <article class="py-20 px-6 max-w-6xl mx-auto animate-reveal">
     <!-- Header -->
     <div class="text-center mb-16">
       <span class="text-[10px] uppercase tracking-[0.4em] font-bold text-gray-400 mb-4 block">
-        {item.data.status || 'Recently Sold'}
+        Recently Sold
       </span>
       <h1 class="text-5xl md:text-7xl font-serif text-gray-900 mb-6">{item.data.address}</h1>
       <p class="text-xl md:text-2xl font-light text-gray-500 tracking-widest uppercase">
-        {item.data.price || `Sold for ${item.data.price}`}
+        Sold for {item.data.salePrice}
       </p>
     </div>
 
@@ -64,10 +64,10 @@ const allImages = [item.data.heroImage, ...(item.data.gallery || [])].filter(Boo
       
       <aside class="h-fit sticky top-32">
         <div class="border border-gray-100 p-10 rounded-[2rem] bg-white shadow-sm text-center">
-          <h3 class="text-xl font-serif mb-4">Inquire</h3>
-          <p class="text-sm text-gray-500 mb-8 font-light italic">Request a private showing or detailed market analysis for this property.</p>
+          <h3 class="text-xl font-serif mb-4">Market Valuation</h3>
+          <p class="text-sm text-gray-500 mb-8 font-light italic">Curious about your property's value in the current market? Contact Edward for a bespoke analysis.</p>
           <a href="/contact" class="block w-full bg-black text-white py-4 rounded-full text-[10px] uppercase tracking-[0.2em] font-bold hover:bg-gray-800 transition transform-gpu hover:scale-105">
-            Contact Edward
+            Request Analysis
           </a>
         </div>
       </aside>
@@ -90,7 +90,6 @@ const allImages = [item.data.heroImage, ...(item.data.gallery || [])].filter(Boo
     });
   }
 
-  // Runs on initial load and navigation
   document.addEventListener('astro:page-load', initSwiper);
 </script>
 
@@ -98,6 +97,7 @@ const allImages = [item.data.heroImage, ...(item.data.gallery || [])].filter(Boo
   :global(.swiper-pagination-bullet) { background: #fff; opacity: 0.5; }
   :global(.swiper-pagination-bullet-active) { background: #fff; opacity: 1; }
 </style>
+
 
 
 
