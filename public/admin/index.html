@@ -14,6 +14,10 @@
       if (window.netlifyIdentity) {
         window.netlifyIdentity.on("init", (user) => {
           if (!user) {
+            // FORCE INVITE HANDSHAKE: If a token is in the URL, force the signup modal
+            if (window.location.hash.includes("invite_token")) {
+              window.netlifyIdentity.open("signup");
+            }
             window.netlifyIdentity.on("login", () => {
               document.location.href = "/admin/";
             });
