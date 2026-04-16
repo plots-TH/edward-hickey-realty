@@ -44,8 +44,7 @@ const { title = "Edward Hickey | Real Estate" } = Astro.props;
         setTimeout(() => clearInterval(checkIdentity), 10000);
       }
 
-      // 2. THE WATCHDOG: This forces the original tab to wake up
-      // It checks every 2 seconds if you finished the signup in the other window
+      // 2. THE WATCHDOG: Syncs the original tab
       const syncInterval = setInterval(() => {
         const user = window.netlifyIdentity.currentUser();
         if (user) {
@@ -58,13 +57,22 @@ const { title = "Edward Hickey | Real Estate" } = Astro.props;
       window.netlifyIdentity.on("login", () => {
         document.location.href = "/admin/";
       });
+
+      // 4. THE SELF-DESTRUCT: Closes the extra email tab
+      window.netlifyIdentity.on("confirmation", () => {
+        if (window.opener) {
+          window.close();
+        } else {
+          document.location.href = "/admin/";
+        }
+      });
     }
   }
 
-  // Run on load and on Astro page transitions
   handleIdentity();
-  document.addEventListener('astro:after-swap', handleIdentity);
+  document.addEventListener('astro:page-load', handleIdentity);
 </script>
+
 </body>
 </html>
 
