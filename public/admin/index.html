@@ -4,8 +4,6 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Content Manager</title>
-
-    <!-- Use the official Netlify Identity widget -->
     <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
   </head>
 
@@ -22,14 +20,6 @@
           } else if (hash.includes("recovery_token")) {
             window.netlifyIdentity.open("recovery");
           }
-        });
-
-        window.netlifyIdentity.on("login", () => {
-          document.location.href = "/admin/";
-        });
-
-        window.netlifyIdentity.on("logout", () => {
-          document.location.href = "/";
         });
       }
     </script>

@@ -53,7 +53,8 @@ const { title = "Edward Hickey | Real Estate" } = Astro.props;
 
           window.netlifyIdentity.on("login", () => {
             window.netlifyIdentity.close();
-            if (window.location.pathname.startsWith("/admin")) {
+
+            if (!window.location.pathname.startsWith("/admin")) {
               window.location.href = "/admin/";
             }
           });
