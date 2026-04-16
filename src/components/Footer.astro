@@ -38,12 +38,12 @@ const today = new Date();
 </footer>
 
 <script is:inline>
-  // Manual trigger for Netlify Identity
   const loginBtn = document.getElementById('admin-login-btn');
+
   if (loginBtn) {
     loginBtn.addEventListener('click', () => {
       if (window.netlifyIdentity) {
-        window.netlifyIdentity.open();
+        window.netlifyIdentity.open("login");
       } else {
         console.error("Netlify Identity not loaded");
         alert("Admin module loading... please try again in a moment.");

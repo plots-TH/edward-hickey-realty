@@ -4,24 +4,32 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Content Manager</title>
-    <!-- Must point to the same local file -->
-    <script src="/netlify-identity.js"></script>
+
+    <!-- Use the official Netlify Identity widget -->
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
   </head>
 
   <body>
     <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+
     <script>
       if (window.netlifyIdentity) {
-        window.netlifyIdentity.on("init", (user) => {
-          if (!user) {
-            // FORCE INVITE HANDSHAKE: If a token is in the URL, force the signup modal
-            if (window.location.hash.includes("invite_token")) {
-              window.netlifyIdentity.open("signup");
-            }
-            window.netlifyIdentity.on("login", () => {
-              document.location.href = "/admin/";
-            });
+        window.netlifyIdentity.on("init", () => {
+          const hash = window.location.hash || "";
+
+          if (hash.includes("invite_token")) {
+            window.netlifyIdentity.open("signup");
+          } else if (hash.includes("recovery_token")) {
+            window.netlifyIdentity.open("recovery");
           }
+        });
+
+        window.netlifyIdentity.on("login", () => {
+          document.location.href = "/admin/";
+        });
+
+        window.netlifyIdentity.on("logout", () => {
+          document.location.href = "/";
         });
       }
     </script>

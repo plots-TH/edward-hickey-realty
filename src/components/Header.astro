@@ -23,23 +23,34 @@
 
 <script is:inline>
   function toggleAdminLink() {
-    const adminLink = document.getElementById('admin-nav-link');
-    if (adminLink && window.netlifyIdentity) {
-      const user = window.netlifyIdentity.currentUser();
-      adminLink.classList.toggle('hidden', !user);
+    const adminLink = document.getElementById("admin-nav-link");
+    if (!adminLink || !window.netlifyIdentity) return;
+
+    const user = window.netlifyIdentity.currentUser();
+    adminLink.classList.toggle("hidden", !user);
+  }
+
+  function initAdminLink() {
+    if (!window.netlifyIdentity) return;
+
+    toggleAdminLink();
+
+    if (!window.__adminLinkListenersBound) {
+      window.__adminLinkListenersBound = true;
+
+      window.netlifyIdentity.on("init", toggleAdminLink);
+      window.netlifyIdentity.on("login", toggleAdminLink);
+      window.netlifyIdentity.on("logout", toggleAdminLink);
     }
   }
 
-  function setupIdentity() {
-    if (window.netlifyIdentity) {
-      toggleAdminLink();
-      window.netlifyIdentity.on('login', user => { toggleAdminLink(); window.netlifyIdentity.close(); });
-      window.netlifyIdentity.on('logout', () => { toggleAdminLink(); document.location.href = "/"; });
-    }
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initAdminLink);
+  } else {
+    initAdminLink();
   }
 
-  document.addEventListener('astro:page-load', setupIdentity);
-  setupIdentity();
+  document.addEventListener("astro:page-load", initAdminLink);
 </script>
 
 

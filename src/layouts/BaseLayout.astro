@@ -13,15 +13,18 @@ const { title = "Edward Hickey | Real Estate" } = Astro.props;
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>{title}</title>
 
-		<!-- 1. The ONLY library call - no extra logic here -->
-		<script is:inline src="/netlify-identity.js"></script>
+		<!-- Use the official Netlify Identity widget -->
+		<script is:inline src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 
 		<ClientRouter />
 
-		<!-- SEO & Favicon -->
-		<meta name="description" content="Edward Hickey - Luxury Real Estate Associate Broker at Compass." />
+		<meta
+			name="description"
+			content="Edward Hickey - Luxury Real Estate Associate Broker at Compass."
+		/>
 		<link rel="icon" type="image/png" href="/favicon.png" />
 	</head>
+
 	<body class="bg-white text-slate-900 flex flex-col min-h-screen">
 		<Header />
 		<main class="flex-grow">
@@ -29,38 +32,56 @@ const { title = "Edward Hickey | Real Estate" } = Astro.props;
 		</main>
 		<Footer />
 
-		<!-- 2. The script that FORCES the signup box to open -->
 		<script is:inline>
-  function initIdentity() {
-    if (window.netlifyIdentity) {
-      // 1. Listen for the initial "Handshake"
-      window.netlifyIdentity.on("init", (user) => {
-        if (!user && window.location.hash.includes("invite_token")) {
-          window.netlifyIdentity.open("signup");
-        }
-      });
+			function handleIdentityHash() {
+				if (!window.netlifyIdentity) return;
 
-      // 2. ONLY redirect when a login actually happens
-      window.netlifyIdentity.on("login", () => {
-        document.location.href = "/admin/";
-      });
+				const hash = window.location.hash || "";
 
-      // 3. Clean up on logout to prevent "User Not Found" errors
-      window.netlifyIdentity.on("logout", () => {
-        localStorage.clear();
-        document.location.href = "/";
-      });
-    }
-  }
+				if (hash.includes("invite_token")) {
+					window.netlifyIdentity.open("signup");
+				} else if (hash.includes("recovery_token")) {
+					window.netlifyIdentity.open("recovery");
+				}
+			}
 
-  // Run once on load
-  initIdentity();
-  // Support Astro page transitions
-  document.addEventListener('astro:page-load', initIdentity);
-</script>
+			function initIdentity() {
+				if (!window.netlifyIdentity) return;
 
+				if (!window.__identityListenersBound) {
+					window.__identityListenersBound = true;
 
-</body>
+					window.netlifyIdentity.on("init", () => {
+						handleIdentityHash();
+					});
+
+					window.netlifyIdentity.on("login", () => {
+						window.netlifyIdentity.close();
+
+						if (window.location.pathname.startsWith("/admin")) {
+							window.location.href = "/admin/";
+						}
+					});
+
+					window.netlifyIdentity.on("logout", () => {
+						if (window.location.pathname.startsWith("/admin")) {
+							window.location.href = "/";
+						}
+					});
+				}
+
+				handleIdentityHash();
+			}
+
+			if (document.readyState === "loading") {
+				document.addEventListener("DOMContentLoaded", initIdentity);
+			} else {
+				initIdentity();
+			}
+
+			document.addEventListener("astro:page-load", initIdentity);
+		</script>
+	</body>
 </html>
 
 
