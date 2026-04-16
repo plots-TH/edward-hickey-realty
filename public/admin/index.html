@@ -8,11 +8,11 @@
   </script>
 </head>
 <body>
-  <!-- Load Decap CMS Library -->
+  <!-- 2. Load the CMS Library -->
   <script src="https://unpkg.com@^3.0.0/dist/decap-cms.js"></script>
-  
+
   <script>
-    // Force the widget to check for a user on this specific page
+    // 3. This script specifically tells the CMS to open once the user logs in
     if (window.netlifyIdentity) {
       window.netlifyIdentity.on("init", user => {
         if (!user) {
@@ -25,5 +25,6 @@
   </script>
 </body>
 </html>
+
 
 
