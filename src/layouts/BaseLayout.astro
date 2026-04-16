@@ -31,46 +31,47 @@ const { title = "Edward Hickey | Real Estate" } = Astro.props;
 
 		<!-- 2. The script that FORCES the signup box to open -->
 		<script is:inline>
-  function handleIdentity() {
-    if (window.netlifyIdentity) {
-      // 1. Handle the Initial Invite Modal
-      if (window.location.hash.includes("invite_token")) {
-        const checkIdentity = setInterval(() => {
-          if (window.netlifyIdentity) {
-            window.netlifyIdentity.open("signup");
-            clearInterval(checkIdentity);
-          }
-        }, 500);
-        setTimeout(() => clearInterval(checkIdentity), 10000);
-      }
+    function handleIdentity() {
+    if (!window.netlifyIdentity) return;
 
-      // 2. THE WATCHDOG: Syncs the original tab
-      const syncInterval = setInterval(() => {
-        const user = window.netlifyIdentity.currentUser();
-        if (user) {
-          clearInterval(syncInterval);
-          document.location.href = "/admin/";
-        }
-      }, 2000);
-
-      // 3. Normal Login Listener
-      window.netlifyIdentity.on("login", () => {
+    // 1. WATCHDOG: Redirect this tab if we log in anywhere
+    const checkLogin = () => {
+      if (window.netlifyIdentity.currentUser()) {
         document.location.href = "/admin/";
-      });
+      }
+    };
 
-      // 4. THE SELF-DESTRUCT: Closes the extra email tab
-      window.netlifyIdentity.on("confirmation", () => {
-        if (window.opener) {
-          window.close();
-        } else {
-          document.location.href = "/admin/";
-        }
-      });
-    }
+    // 2. CROSS-TAB SYNC: Listen for the login cookie from the other tab
+    window.addEventListener('storage', (event) => {
+      if (event.key === 'netlify-cms-user' || event.key.includes('gotrue.user')) {
+        checkLogin();
+      }
+    });
+
+    // 3. INTERNAL EVENTS: Handle logic within this specific tab
+    window.netlifyIdentity.on("init", user => {
+      if (user) return checkLogin();
+      if (window.location.hash.includes("invite_token")) {
+        window.netlifyIdentity.open("signup");
+      }
+    });
+
+    window.netlifyIdentity.on("login", () => {
+      // If we are the "New" tab (the email link), close ourselves
+      if (window.opener) {
+        window.close();
+      } else {
+        checkLogin();
+      }
+    });
+    
+    // Fallback check
+    setInterval(checkLogin, 2000);
   }
 
   handleIdentity();
   document.addEventListener('astro:page-load', handleIdentity);
+
 </script>
 
 </body>
