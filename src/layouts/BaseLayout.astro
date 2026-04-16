@@ -33,7 +33,7 @@ const { title = "Edward Hickey | Real Estate" } = Astro.props;
 		<script is:inline>
   function handleIdentity() {
     if (window.netlifyIdentity) {
-      // 1. Handle the Initial Invite/Signup
+      // 1. Handle the Initial Invite Modal
       if (window.location.hash.includes("invite_token")) {
         const checkIdentity = setInterval(() => {
           if (window.netlifyIdentity) {
@@ -44,36 +44,30 @@ const { title = "Edward Hickey | Real Estate" } = Astro.props;
         setTimeout(() => clearInterval(checkIdentity), 10000);
       }
 
-      // 2. SMOOTH REDIRECTS
-      // If they just confirmed their email in this tab, send them to admin
-      window.netlifyIdentity.on("confirmation", () => {
-        document.location.href = "/admin/";
-      });
+      // 2. THE WATCHDOG: This forces the original tab to wake up
+      // It checks every 2 seconds if you finished the signup in the other window
+      const syncInterval = setInterval(() => {
+        const user = window.netlifyIdentity.currentUser();
+        if (user) {
+          clearInterval(syncInterval);
+          document.location.href = "/admin/";
+        }
+      }, 2000);
 
-      // If they log in normally, send them to admin
+      // 3. Normal Login Listener
       window.netlifyIdentity.on("login", () => {
         document.location.href = "/admin/";
       });
-
-	  // Add this right after the "login" block (around line 50)
-window.netlifyIdentity.on("close", () => {
-  const user = window.netlifyIdentity.currentUser();
-  if (user) {
-    document.location.href = "/admin/";
-  }
-});
-
     }
   }
 
-  // Run on initial load
+  // Run on load and on Astro page transitions
   handleIdentity();
-  // Run on Astro page swaps
   document.addEventListener('astro:after-swap', handleIdentity);
 </script>
-
-	</body>
+</body>
 </html>
+
 
 
 
