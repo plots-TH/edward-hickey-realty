@@ -3,6 +3,7 @@ import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { ClientRouter } from 'astro:transitions';
+
 const { title = "Edward Hickey | Real Estate" } = Astro.props;
 ---
 <!doctype html>
@@ -11,34 +12,48 @@ const { title = "Edward Hickey | Real Estate" } = Astro.props;
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>{title}</title>
-		</script>
+
+		<!-- 1. The ONLY library call - no extra logic here -->
+		<script is:inline src="/netlify-identity.js"></script>
+
 		<ClientRouter />
+
+		<!-- SEO & Favicon -->
+		<meta name="description" content="Edward Hickey - Luxury Real Estate Associate Broker at Compass." />
 		<link rel="icon" type="image/png" href="/favicon.png" />
 	</head>
 	<body class="bg-white text-slate-900 flex flex-col min-h-screen">
 		<Header />
-		<main class="flex-grow"><slot /></main>
+		<main class="flex-grow">
+			<slot />
+		</main>
 		<Footer />
+
+		<!-- 2. The script that FORCES the signup box to open -->
 		<script is:inline>
-			function initIdentity() {
-				if (window.netlifyIdentity) {
-					window.netlifyIdentity.on("init", user => {
-						if (!user) {
-							if (window.location.hash.includes("invite_token")) {
-								window.netlifyIdentity.open("signup");
-							}
-							window.netlifyIdentity.on("login", () => {
-								document.location.href = "/admin/";
-							});
+			function handleInvite() {
+				if (window.location.hash.includes("invite_token")) {
+					// We check every 500ms to see if the library is ready
+					const checkIdentity = setInterval(() => {
+						if (window.netlifyIdentity) {
+							window.netlifyIdentity.open("signup");
+							clearInterval(checkIdentity);
 						}
-					});
+					}, 500);
+					
+					// Stop checking after 10 seconds to prevent infinite loops
+					setTimeout(() => clearInterval(checkIdentity), 10000);
 				}
 			}
-			initIdentity();
-			document.addEventListener('astro:page-load', initIdentity);
+
+			// Run on initial load
+			handleInvite();
+			// Run every time you move between pages (Back/Forward)
+			document.addEventListener('astro:after-swap', handleInvite);
 		</script>
 	</body>
 </html>
+
 
 
 
