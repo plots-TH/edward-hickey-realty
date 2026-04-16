@@ -12,12 +12,13 @@ const { title = "Edward Hickey | Real Estate" } = Astro.props;
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>{title}</title>
-
-		<!-- 1. The ACTUAL Library - Critical to have this here -->
+		
+		<!-- 1. LOAD WIDGET IMMEDIATELY -->
 		</script>
 
 		<ClientRouter />
 
+		<!-- SEO & Social Sharing -->
 		<meta name="description" content="Edward Hickey - Luxury Real Estate Associate Broker at Compass." />
 		<link rel="icon" type="image/png" href="/favicon.png" />
 	</head>
@@ -28,33 +29,36 @@ const { title = "Edward Hickey | Real Estate" } = Astro.props;
 		</main>
 		<Footer />
 
-		<!-- 2. Logic to catch the invite token and open the password modal -->
+		<!-- 2. FORCED TRIGGER SCRIPT -->
 		<script is:inline>
-			function initIdentity() {
+			function forceIdentityModal() {
 				if (window.netlifyIdentity) {
-					window.netlifyIdentity.on("init", user => {
-						if (!user) {
-							// Check if the URL contains the invite token
-							if (window.location.hash.includes("invite_token")) {
-								// Open the signup/password creation modal immediately
-								window.netlifyIdentity.open("signup");
-							}
-							
-							// Redirect to admin after they finish setting the password
-							window.netlifyIdentity.on("login", () => {
-								document.location.href = "/admin/";
-							});
-						}
+					// Handle the redirect after login
+					window.netlifyIdentity.on("login", () => {
+						document.location.href = "/admin/";
 					});
+
+					// BRUTE FORCE: If there is a token, keep trying to open the modal
+					if (window.location.hash.includes("invite_token")) {
+						let attempts = 0;
+						const checkExist = setInterval(() => {
+							attempts++;
+							window.netlifyIdentity.open("signup");
+							
+							// Stop trying after 5 seconds or if modal appears
+							if (attempts > 10) {
+								clearInterval(checkExist);
+							}
+						}, 500);
+					}
 				}
 			}
 
-			// Run on initial page load
-			initIdentity();
-			
-			// Re-run for Astro's ClientRouter navigation so it works on back/forward
-			document.addEventListener('astro:page-load', initIdentity);
+			// Run on initial load and every time ClientRouter swaps a page
+			forceIdentityModal();
+			document.addEventListener('astro:page-load', forceIdentityModal);
 		</script>
 	</body>
 </html>
+
 
