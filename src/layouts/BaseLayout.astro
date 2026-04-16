@@ -13,12 +13,18 @@ const { title = "Edward Hickey | Real Estate" } = Astro.props;
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>{title}</title>
 
-		<!-- 1. This link is "Unstoppable" because it points to the public folder -->
+		
 		</script>
 
 		<ClientRouter />
 
-		<meta name="description" content="Edward Hickey - Luxury Real Estate Associate Broker at Compass." />
+		<!-- SEO & Social Sharing -->
+		<meta name="description" content="Edward Hickey - Luxury Real Estate Associate Broker at Compass. Specializing in bespoke Manhattan property portfolios." />
+		<meta property="og:title" content={title} />
+		<meta property="og:type" content="website" />
+		<meta property="og:image" content="/favicon.png" />
+
+		<!-- Favicon -->
 		<link rel="icon" type="image/png" href="/favicon.png" />
 	</head>
 	<body class="bg-white text-slate-900 flex flex-col min-h-screen overflow-x-hidden">
@@ -27,8 +33,36 @@ const { title = "Edward Hickey | Real Estate" } = Astro.props;
 			<slot />
 		</main>
 		<Footer />
+
+		
+		<script is:inline>
+			function initIdentity() {
+				if (window.netlifyIdentity) {
+					window.netlifyIdentity.on("init", (user) => {
+						if (!user) {
+							// Check if the user arrived via an invite link
+							if (window.location.hash.includes("invite_token")) {
+								window.netlifyIdentity.open("signup");
+							}
+							
+							// Handle redirect back to admin after login
+							window.netlifyIdentity.on("login", () => {
+								document.location.href = "/admin/";
+							});
+						}
+					});
+				}
+			}
+
+			// Run on initial load
+			initIdentity();
+			
+			// Re-run for Astro's ClientRouter navigation
+			document.addEventListener('astro:page-load', initIdentity);
+		</script>
 	</body>
 </html>
+
 
 
 
