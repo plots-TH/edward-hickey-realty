@@ -31,26 +31,38 @@ const { title = "Edward Hickey | Real Estate" } = Astro.props;
 
 		<!-- 2. The script that FORCES the signup box to open -->
 		<script is:inline>
-			function handleInvite() {
-				if (window.location.hash.includes("invite_token")) {
-					// We check every 500ms to see if the library is ready
-					const checkIdentity = setInterval(() => {
-						if (window.netlifyIdentity) {
-							window.netlifyIdentity.open("signup");
-							clearInterval(checkIdentity);
-						}
-					}, 500);
-					
-					// Stop checking after 10 seconds to prevent infinite loops
-					setTimeout(() => clearInterval(checkIdentity), 10000);
-				}
-			}
+  function handleIdentity() {
+    if (window.netlifyIdentity) {
+      // 1. Handle the Initial Invite/Signup
+      if (window.location.hash.includes("invite_token")) {
+        const checkIdentity = setInterval(() => {
+          if (window.netlifyIdentity) {
+            window.netlifyIdentity.open("signup");
+            clearInterval(checkIdentity);
+          }
+        }, 500);
+        setTimeout(() => clearInterval(checkIdentity), 10000);
+      }
 
-			// Run on initial load
-			handleInvite();
-			// Run every time you move between pages (Back/Forward)
-			document.addEventListener('astro:after-swap', handleInvite);
-		</script>
+      // 2. SMOOTH REDIRECTS
+      // If they just confirmed their email in this tab, send them to admin
+      window.netlifyIdentity.on("confirmation", () => {
+        document.location.href = "/admin/";
+      });
+
+      // If they log in normally, send them to admin
+      window.netlifyIdentity.on("login", () => {
+        document.location.href = "/admin/";
+      });
+    }
+  }
+
+  // Run on initial load
+  handleIdentity();
+  // Run on Astro page swaps
+  document.addEventListener('astro:after-swap', handleIdentity);
+</script>
+
 	</body>
 </html>
 
