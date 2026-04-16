@@ -31,48 +31,34 @@ const { title = "Edward Hickey | Real Estate" } = Astro.props;
 
 		<!-- 2. The script that FORCES the signup box to open -->
 		<script is:inline>
-    function handleIdentity() {
-    if (!window.netlifyIdentity) return;
+  function initIdentity() {
+    if (window.netlifyIdentity) {
+      // 1. Listen for the initial "Handshake"
+      window.netlifyIdentity.on("init", (user) => {
+        if (!user && window.location.hash.includes("invite_token")) {
+          window.netlifyIdentity.open("signup");
+        }
+      });
 
-    // 1. WATCHDOG: Redirect this tab if we log in anywhere
-    const checkLogin = () => {
-      if (window.netlifyIdentity.currentUser()) {
+      // 2. ONLY redirect when a login actually happens
+      window.netlifyIdentity.on("login", () => {
         document.location.href = "/admin/";
-      }
-    };
+      });
 
-    // 2. CROSS-TAB SYNC: Listen for the login cookie from the other tab
-    window.addEventListener('storage', (event) => {
-      if (event.key === 'netlify-cms-user' || event.key.includes('gotrue.user')) {
-        checkLogin();
-      }
-    });
-
-    // 3. INTERNAL EVENTS: Handle logic within this specific tab
-    window.netlifyIdentity.on("init", user => {
-      if (user) return checkLogin();
-      if (window.location.hash.includes("invite_token")) {
-        window.netlifyIdentity.open("signup");
-      }
-    });
-
-    window.netlifyIdentity.on("login", () => {
-      // If we are the "New" tab (the email link), close ourselves
-      if (window.opener) {
-        window.close();
-      } else {
-        checkLogin();
-      }
-    });
-    
-    // Fallback check
-    setInterval(checkLogin, 2000);
+      // 3. Clean up on logout to prevent "User Not Found" errors
+      window.netlifyIdentity.on("logout", () => {
+        localStorage.clear();
+        document.location.href = "/";
+      });
+    }
   }
 
-  handleIdentity();
-  document.addEventListener('astro:page-load', handleIdentity);
-
+  // Run once on load
+  initIdentity();
+  // Support Astro page transitions
+  document.addEventListener('astro:page-load', initIdentity);
 </script>
+
 
 </body>
 </html>
