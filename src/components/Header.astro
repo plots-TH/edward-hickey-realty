@@ -17,7 +17,7 @@
         <a 
           href="https://compass.com" 
           target="_blank" 
-          rel="noopener noreferrer"
+          rel="noopener noreferrer" 
           class="hidden sm:flex items-center transition-all duration-500 hover:scale-110 hover:opacity-60 transform-gpu will-change-transform"
         >
           <img 
@@ -30,6 +30,7 @@
 
       <!-- Main Navigation Links -->
       <div class="hidden md:flex space-x-10 items-center">
+        <a id="admin-nav-link" href="/admin/" class="hidden text-[10px] uppercase tracking-[0.2em] font-bold text-slate-900 transition-all duration-700 hover:scale-110 transform-gpu will-change-transform border-b border-slate-900">Admin</a>
         <a href="/about" class="text-[10px] uppercase tracking-[0.2em] font-bold text-gray-400 transition-all duration-700 hover:text-black hover:scale-105 transform-gpu will-change-transform">About</a>
         <a href="/listings" class="text-[10px] uppercase tracking-[0.2em] font-bold text-gray-400 transition-all duration-700 hover:text-black hover:scale-105 transform-gpu will-change-transform">Listings</a>
         <a href="/closed" class="text-[10px] uppercase tracking-[0.2em] font-bold text-gray-400 transition-all duration-700 hover:text-black hover:scale-105 transform-gpu will-change-transform">Recently Sold</a>
@@ -43,6 +44,24 @@
     </div>
   </nav>
 </header>
+
+<script is:inline>
+  function checkAdminStatus() {
+    const adminLink = document.getElementById('admin-nav-link');
+    if (adminLink && window.netlifyIdentity) {
+      const user = window.netlifyIdentity.currentUser();
+      if (user) {
+        adminLink.classList.remove('hidden');
+      }
+    }
+  }
+
+  // Check on load and after Astro page transitions
+  document.addEventListener('astro:page-load', checkAdminStatus);
+  // Initial check in case Identity is already loaded
+  setTimeout(checkAdminStatus, 1000);
+</script>
+
 
 
 
