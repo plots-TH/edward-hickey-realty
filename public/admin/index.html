@@ -5,9 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Content Manager</title>
     <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+
+    <style>
+      .back-to-site {
+        position: fixed;
+        top: 16px;
+        left: 16px;
+        z-index: 9999;
+        background: white;
+        color: black;
+        border: 1px solid #d1d5db;
+        border-radius: 9999px;
+        padding: 10px 14px;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        text-decoration: none;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      }
+
+      .back-to-site:hover {
+        border-color: black;
+      }
+    </style>
   </head>
 
   <body>
+    <a href="/" class="back-to-site">Back to Site</a>
+
     <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
 
     <script>

@@ -35,13 +35,21 @@
     adminLink.classList.toggle("hidden", !isVisible);
   }
 
-  function initAdminLink() {
+  function syncAdminLink() {
     if (!window.netlifyIdentity) {
       setAdminVisibility(false);
       return;
     }
 
-    setAdminVisibility(false);
+    const user = window.netlifyIdentity.currentUser();
+    setAdminVisibility(!!user);
+  }
+
+  function initAdminLink() {
+    if (!window.netlifyIdentity) {
+      setAdminVisibility(false);
+      return;
+    }
 
     if (!window.__adminLinkListenersBound) {
       window.__adminLinkListenersBound = true;
@@ -58,6 +66,12 @@
         setAdminVisibility(false);
       });
     }
+
+    // important: reflect existing session immediately
+    syncAdminLink();
+
+    // run once more shortly after load in case the widget finishes hydrating late
+    setTimeout(syncAdminLink, 300);
   }
 
   if (document.readyState === "loading") {
