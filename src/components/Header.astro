@@ -11,7 +11,14 @@
       </div>
 
       <div class="hidden md:flex space-x-10 items-center">
-        <a id="admin-nav-link" href="/admin/" class="hidden text-[10px] uppercase tracking-[0.2em] font-bold text-slate-900 border-b border-slate-900">Admin</a>
+        <a
+  id="admin-nav-link"
+  href="/admin/"
+  data-astro-reload
+  class="hidden text-[10px] uppercase tracking-[0.2em] font-bold text-slate-900 border-b border-slate-900"
+>
+  Admin
+</a>
         <a href="/about" class="text-[10px] uppercase tracking-[0.2em] font-bold text-gray-400 hover:text-black transition">About</a>
         <a href="/listings" class="text-[10px] uppercase tracking-[0.2em] font-bold text-gray-400 hover:text-black transition">Listings</a>
         <a href="/closed" class="text-[10px] uppercase tracking-[0.2em] font-bold text-gray-400 hover:text-black transition">Recently Sold</a>
@@ -22,26 +29,39 @@
 </header>
 
 <script is:inline>
-  function toggleAdminLink() {
+  function setAdminVisibility(isVisible) {
     const adminLink = document.getElementById("admin-nav-link");
-    if (!adminLink || !window.netlifyIdentity) return;
+    if (!adminLink) return;
 
-    const user = window.netlifyIdentity.currentUser();
-    adminLink.classList.toggle("hidden", !user);
+    adminLink.classList.toggle("hidden", !isVisible);
   }
 
   function initAdminLink() {
-    if (!window.netlifyIdentity) return;
+    if (!window.netlifyIdentity) {
+      setAdminVisibility(false);
+      return;
+    }
 
-    toggleAdminLink();
+    // Always hide first (prevents flicker / false positive)
+    setAdminVisibility(false);
 
     if (!window.__adminLinkListenersBound) {
       window.__adminLinkListenersBound = true;
 
-      window.netlifyIdentity.on("init", toggleAdminLink);
-      window.netlifyIdentity.on("login", toggleAdminLink);
-      window.netlifyIdentity.on("logout", toggleAdminLink);
+      window.netlifyIdentity.on("init", (user) => {
+        setAdminVisibility(!!user);
+      });
+
+      window.netlifyIdentity.on("login", () => {
+        setAdminVisibility(true);
+      });
+
+      window.netlifyIdentity.on("logout", () => {
+        setAdminVisibility(false);
+      });
     }
+
+    window.netlifyIdentity.init();
   }
 
   if (document.readyState === "loading") {
