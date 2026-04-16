@@ -32,7 +32,6 @@
   function setAdminVisibility(isVisible) {
     const adminLink = document.getElementById("admin-nav-link");
     if (!adminLink) return;
-
     adminLink.classList.toggle("hidden", !isVisible);
   }
 
@@ -42,7 +41,6 @@
       return;
     }
 
-    // Always hide first (prevents flicker / false positive)
     setAdminVisibility(false);
 
     if (!window.__adminLinkListenersBound) {
@@ -60,8 +58,6 @@
         setAdminVisibility(false);
       });
     }
-
-    window.netlifyIdentity.init();
   }
 
   if (document.readyState === "loading") {
@@ -69,8 +65,6 @@
   } else {
     initAdminLink();
   }
-
-  document.addEventListener("astro:page-load", initAdminLink);
 </script>
 
 

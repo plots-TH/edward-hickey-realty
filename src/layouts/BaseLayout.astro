@@ -2,86 +2,79 @@
 import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import { ClientRouter } from 'astro:transitions';
 
 const { title = "Edward Hickey | Real Estate" } = Astro.props;
 ---
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>{title}</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
 
-		<!-- Use the official Netlify Identity widget -->
-		<script is:inline src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    <script is:inline src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 
-		<ClientRouter />
+    <meta
+      name="description"
+      content="Edward Hickey - Luxury Real Estate Associate Broker at Compass."
+    />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+  </head>
 
-		<meta
-			name="description"
-			content="Edward Hickey - Luxury Real Estate Associate Broker at Compass."
-		/>
-		<link rel="icon" type="image/png" href="/favicon.png" />
-	</head>
+  <body class="bg-white text-slate-900 flex flex-col min-h-screen">
+    <Header />
+    <main class="flex-grow">
+      <slot />
+    </main>
+    <Footer />
 
-	<body class="bg-white text-slate-900 flex flex-col min-h-screen">
-		<Header />
-		<main class="flex-grow">
-			<slot />
-		</main>
-		<Footer />
+    <script is:inline>
+      function handleIdentityHash() {
+        if (!window.netlifyIdentity) return;
 
-		<script is:inline>
-			function handleIdentityHash() {
-				if (!window.netlifyIdentity) return;
+        const hash = window.location.hash || "";
 
-				const hash = window.location.hash || "";
+        if (hash.includes("invite_token")) {
+          window.netlifyIdentity.open("signup");
+        } else if (hash.includes("recovery_token")) {
+          window.netlifyIdentity.open("recovery");
+        }
+      }
 
-				if (hash.includes("invite_token")) {
-					window.netlifyIdentity.open("signup");
-				} else if (hash.includes("recovery_token")) {
-					window.netlifyIdentity.open("recovery");
-				}
-			}
+      function initIdentity() {
+        if (!window.netlifyIdentity) return;
 
-			function initIdentity() {
-				if (!window.netlifyIdentity) return;
+        if (!window.__identityListenersBound) {
+          window.__identityListenersBound = true;
 
-				if (!window.__identityListenersBound) {
-					window.__identityListenersBound = true;
+          window.netlifyIdentity.on("init", () => {
+            handleIdentityHash();
+          });
 
-					window.netlifyIdentity.on("init", () => {
-						handleIdentityHash();
-					});
+          window.netlifyIdentity.on("login", () => {
+            window.netlifyIdentity.close();
+            if (window.location.pathname.startsWith("/admin")) {
+              window.location.href = "/admin/";
+            }
+          });
 
-					window.netlifyIdentity.on("login", () => {
-						window.netlifyIdentity.close();
+          window.netlifyIdentity.on("logout", () => {
+            if (window.location.pathname.startsWith("/admin")) {
+              window.location.href = "/";
+            }
+          });
+        }
 
-						if (window.location.pathname.startsWith("/admin")) {
-							window.location.href = "/admin/";
-						}
-					});
+        handleIdentityHash();
+      }
 
-					window.netlifyIdentity.on("logout", () => {
-						if (window.location.pathname.startsWith("/admin")) {
-							window.location.href = "/";
-						}
-					});
-				}
-
-				handleIdentityHash();
-			}
-
-			if (document.readyState === "loading") {
-				document.addEventListener("DOMContentLoaded", initIdentity);
-			} else {
-				initIdentity();
-			}
-
-			document.addEventListener("astro:page-load", initIdentity);
-		</script>
-	</body>
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", initIdentity);
+      } else {
+        initIdentity();
+      }
+    </script>
+  </body>
 </html>
 
 
