@@ -46,21 +46,40 @@
 </header>
 
 <script is:inline>
-  function checkAdminStatus() {
+  function toggleAdminLink(user) {
     const adminLink = document.getElementById('admin-nav-link');
-    if (adminLink && window.netlifyIdentity) {
-      const user = window.netlifyIdentity.currentUser();
+    if (adminLink) {
       if (user) {
         adminLink.classList.remove('hidden');
+      } else {
+        adminLink.classList.add('hidden');
       }
     }
   }
 
-  // Check on load and after Astro page transitions
-  document.addEventListener('astro:page-load', checkAdminStatus);
-  // Initial check in case Identity is already loaded
-  setTimeout(checkAdminStatus, 1000);
+  function setupIdentity() {
+    if (window.netlifyIdentity) {
+      // Check current status
+      toggleAdminLink(window.netlifyIdentity.currentUser());
+
+      // Listen for login - shows link immediately
+      window.netlifyIdentity.on('login', user => {
+        toggleAdminLink(user);
+        window.netlifyIdentity.close(); // Closes modal after login
+      });
+
+      // Listen for logout - hides link immediately
+      window.netlifyIdentity.on('logout', () => {
+        toggleAdminLink(null);
+        document.location.href = "/"; // Redirect home on logout
+      });
+    }
+  }
+
+  document.addEventListener('astro:page-load', setupIdentity);
+  setTimeout(setupIdentity, 500);
 </script>
+
 
 
 
