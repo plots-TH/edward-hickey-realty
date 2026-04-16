@@ -13,18 +13,12 @@ const { title = "Edward Hickey | Real Estate" } = Astro.props;
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>{title}</title>
 
-		<!-- 1. THE ACTUAL LIBRARY (RE-ADDED AND FIXED) -->
+		<!-- 1. This link is "Unstoppable" because it points to the public folder -->
 		</script>
 
 		<ClientRouter />
 
-		<!-- SEO & Social Sharing -->
 		<meta name="description" content="Edward Hickey - Luxury Real Estate Associate Broker at Compass." />
-		<meta property="og:title" content={title} />
-		<meta property="og:type" content="website" />
-		<meta property="og:image" content="/favicon.png" />
-
-		<!-- Favicon -->
 		<link rel="icon" type="image/png" href="/favicon.png" />
 	</head>
 	<body class="bg-white text-slate-900 flex flex-col min-h-screen overflow-x-hidden">
@@ -33,40 +27,9 @@ const { title = "Edward Hickey | Real Estate" } = Astro.props;
 			<slot />
 		</main>
 		<Footer />
-
-		<!-- 2. FORCED TRIGGER SCRIPT -->
-		<script is:inline>
-			function forceIdentityModal() {
-				if (window.netlifyIdentity) {
-					// Handle the redirect after login
-					window.netlifyIdentity.on("login", () => {
-						document.location.href = "/admin/";
-					});
-
-					// If there is an invite token, force the modal open
-					if (window.location.hash.includes("invite_token")) {
-						let attempts = 0;
-						const checkExist = setInterval(() => {
-							attempts++;
-							// Try to open the signup modal
-							window.netlifyIdentity.open("signup");
-							
-							// Stop trying after 10 attempts (5 seconds)
-							if (attempts > 10) {
-								clearInterval(checkExist);
-							}
-						}, 500);
-					}
-				}
-			}
-
-			// Run on initial load
-			forceIdentityModal();
-			// Re-run for Astro's ClientRouter navigation
-			document.addEventListener('astro:page-load', forceIdentityModal);
-		</script>
 	</body>
 </html>
+
 
 
 
