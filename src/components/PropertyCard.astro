@@ -7,14 +7,15 @@ const { address, price, status, image, url } = Astro.props;
   <a
     href={url}
     class="block"
-    onclick={`event.preventDefault(); window.trackLeadEvent('select_content', { type: 'listing_click', destination: '${url}' }); setTimeout(() => { window.location.href='${url}'; }, 150);`}
+    data-track-event="select_content"
+    data-track-type="listing_click"
   >
     <div class="relative aspect-[4/5] overflow-hidden rounded-[2.5rem] md:rounded-[3rem] bg-slate-100 shadow-lg">
       {image ? (
-        <Image 
-          src={image} 
-          alt="" 
-          width={800} 
+        <Image
+          src={image}
+          alt=""
+          width={800}
           height={1000}
           onerror="this.style.opacity='0'"
           class="w-full h-full aspect-[4/5] object-cover grayscale transition-all duration-700 ease-out group-hover:grayscale-0 group-hover:scale-105 transform-gpu will-change-transform"
@@ -23,9 +24,9 @@ const { address, price, status, image, url } = Astro.props;
       ) : (
         <div class="w-full h-full bg-gradient-to-br from-gray-100 to-gray-300"></div>
       )}
-      
+
       <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-90 transition-opacity duration-700 group-hover:opacity-70"></div>
-      
+
       <div class="absolute bottom-10 left-8 right-8 text-white transform transition-transform duration-700 ease-out group-hover:-translate-y-2 will-change-transform">
         <span class="text-[10px] uppercase tracking-[0.4em] font-bold text-white/50 mb-3 block transform-gpu">
           {status}

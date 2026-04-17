@@ -61,7 +61,8 @@ const allImages = [item.data.heroImage, ...(item.data.gallery || [])].filter(Boo
           <p class="text-sm text-gray-500 mb-8 font-light italic">Request a private showing or detailed market analysis for this property.</p>
           <a
             href="/contact"
-            onclick="event.preventDefault(); window.trackLeadEvent('generate_lead', { type: 'listing_inquiry_click', destination: '/contact' }); setTimeout(() => { window.location.href='/contact'; }, 150);"
+            data-track-event="generate_lead"
+            data-track-type="listing_inquiry_click"
             class="block w-full bg-black text-white py-4 rounded-full text-[10px] uppercase tracking-[0.2em] font-bold hover:bg-gray-800 transition transform-gpu hover:scale-105"
           >
             Contact Edward

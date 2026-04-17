@@ -9,7 +9,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       name="contact"
       method="POST"
       data-netlify="true"
-      onsubmit="window.trackLeadEvent('generate_lead', { type: 'form_submit' })"
+      data-track-event="generate_lead"
+      data-track-type="form_submit"
       class="grid grid-cols-1 gap-6"
     >
       <input type="hidden" name="form-name" value="contact" />
