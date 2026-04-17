@@ -1,9 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
-import { Image } from 'astro:assets';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 
-// Swiper styles
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
@@ -19,13 +17,11 @@ export async function getStaticPaths() {
 const { item } = Astro.props;
 const { Content } = await render(item);
 
-// Combine hero image and gallery for the slider
 const allImages = [item.data.heroImage, ...(item.data.gallery || [])].filter(Boolean);
 ---
 
 <BaseLayout title={`${item.data.address} | Edward Hickey`}>
   <article class="py-20 px-6 max-w-6xl mx-auto animate-reveal">
-    <!-- Header -->
     <div class="text-center mb-16">
       <span class="text-[10px] uppercase tracking-[0.4em] font-bold text-gray-400 mb-4 block">
         {item.data.status || 'Recently Sold'}
@@ -36,43 +32,40 @@ const allImages = [item.data.heroImage, ...(item.data.gallery || [])].filter(Boo
       </p>
     </div>
 
-    <!-- SWIPER CAROUSEL -->
     <div class="swiper property-carousel rounded-[2rem] md:rounded-[4rem] shadow-2xl mb-20 bg-slate-50 overflow-hidden h-[50vh] md:h-[75vh]">
       <div class="swiper-wrapper">
         {allImages.map((img) => (
           <div class="swiper-slide">
-            <img 
-              src={img} 
-              alt={item.data.address} 
-              class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-1000" 
+            <img
+              src={img}
+              alt={item.data.address}
+              class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-1000"
             />
           </div>
         ))}
       </div>
-      
-      <!-- Navigation -->
+
       <div class="swiper-button-next !text-white !opacity-40 hover:!opacity-100 transition"></div>
       <div class="swiper-button-prev !text-white !opacity-40 hover:!opacity-100 transition"></div>
       <div class="swiper-pagination"></div>
     </div>
 
-    <!-- Content Grid -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-16">
       <div class="lg:col-span-2 prose prose-slate prose-lg max-w-none font-light text-gray-600 leading-relaxed">
         <Content />
       </div>
-      
+
       <aside class="h-fit sticky top-32">
         <div class="border border-gray-100 p-10 rounded-[2rem] bg-white shadow-sm text-center">
           <h3 class="text-xl font-serif mb-4">Inquire</h3>
           <p class="text-sm text-gray-500 mb-8 font-light italic">Request a private showing or detailed market analysis for this property.</p>
           <a
-  href="/contact"
-  onclick="window.trackLeadEvent('generate_lead', { type: 'listing_inquiry_click' })"
-  class="block w-full bg-black text-white py-4 rounded-full text-[10px] uppercase tracking-[0.2em] font-bold hover:bg-gray-800 transition transform-gpu hover:scale-105"
->
-  Contact Edward
-</a>
+            href="/contact"
+            onclick="event.preventDefault(); window.trackLeadEvent('generate_lead', { type: 'listing_inquiry_click', destination: '/contact' }); setTimeout(() => { window.location.href='/contact'; }, 150);"
+            class="block w-full bg-black text-white py-4 rounded-full text-[10px] uppercase tracking-[0.2em] font-bold hover:bg-gray-800 transition transform-gpu hover:scale-105"
+          >
+            Contact Edward
+          </a>
         </div>
       </aside>
     </div>
@@ -94,8 +87,8 @@ const allImages = [item.data.heroImage, ...(item.data.gallery || [])].filter(Boo
     });
   }
 
-  // Runs on initial load and navigation
   document.addEventListener('astro:page-load', initSwiper);
+  document.addEventListener('DOMContentLoaded', initSwiper);
 </script>
 
 <style>
