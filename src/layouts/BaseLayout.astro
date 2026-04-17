@@ -21,21 +21,19 @@ const { title = "Edward Hickey | Real Estate" } = Astro.props;
     <link rel="icon" type="image/png" href="/favicon.png" />
 
     <!-- Google Analytics -->
+<!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-3SNW8VZS9Y"></script>
-
-<script is:inline>
+<script>
   window.dataLayer = window.dataLayer || [];
-
   function gtag(){dataLayer.push(arguments);}
-  window.gtag = gtag;
-
   gtag('js', new Date());
 
   gtag('config', 'G-3SNW8VZS9Y');
-
+</script>
+<script is:inline>
   window.trackLeadEvent = function(eventName, params = {}) {
-    if (typeof window.gtag === 'function') {
-      window.gtag('event', eventName, params);
+    if (typeof gtag === 'function') {
+      gtag('event', eventName, params);
       console.log('GA EVENT SENT:', eventName, params);
     }
   };
