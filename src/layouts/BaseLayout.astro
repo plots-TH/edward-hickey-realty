@@ -27,7 +27,7 @@ const { title = "Edward Hickey | Real Estate" } = Astro.props;
       function gtag(){dataLayer.push(arguments);}
       window.gtag = gtag;
       gtag('js', new Date());
-      gtag('config', 'G-XC0HSVCMKQ');
+      gtag('config', 'G-XC0HSVCMKQ', { debug_mode: true });
     </script>
 
     <script is:inline>
@@ -121,6 +121,8 @@ const { title = "Edward Hickey | Real Estate" } = Astro.props;
           const eventName = form.getAttribute('data-track-event');
           const type = form.getAttribute('data-track-type');
           if (!eventName) return;
+
+          console.log('submitted tracked form', eventName, type);
 
           window.trackLeadEvent(eventName, { type });
         });
