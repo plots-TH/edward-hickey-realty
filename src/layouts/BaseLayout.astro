@@ -27,6 +27,15 @@ const { title = "Edward Hickey | Real Estate" } = Astro.props;
       gtag('js', new Date());
       gtag('config', 'G-XC0HSVCMKQ');
     </script>
+
+    <script is:inline>
+      window.trackLeadEvent = function(eventName, params = {}) {
+        if (typeof window.gtag === 'function') {
+          window.gtag('event', eventName, params);
+        }
+      };
+  </script>
+
   </head>
 
   <body class="bg-white text-slate-900 flex flex-col min-h-screen">

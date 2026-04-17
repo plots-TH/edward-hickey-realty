@@ -4,7 +4,13 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 <BaseLayout title="Contact Edward Hickey">
   <section class="py-20 px-6 max-w-3xl mx-auto">
     <h1 class="text-4xl font-serif mb-8">Inquiry</h1>
-    <form name="contact" method="POST" data-netlify="true" class="grid grid-cols-1 gap-6">
+    <form
+  name="contact"
+  method="POST"
+  data-netlify="true"
+  onsubmit="window.trackLeadEvent('generate_lead', { type: 'form_submit' })"
+  class="grid grid-cols-1 gap-6"
+>
       <input type="hidden" name="form-name" value="contact" />
       <div>
         <label class="block text-sm font-medium text-gray-700">Name</label>

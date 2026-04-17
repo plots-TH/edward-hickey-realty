@@ -4,7 +4,11 @@ const { address, price, status, image, url } = Astro.props;
 ---
 
 <div class="group relative opacity-0 transform-gpu transition-all duration-1000 translate-y-4" data-property-card>
-  <a href={url} class="block">
+  <a
+  href={url}
+  class="block"
+  onclick="window.trackLeadEvent('select_content', { type: 'listing_click' })"
+>
     <div class="relative aspect-[4/5] overflow-hidden rounded-[2.5rem] md:rounded-[3rem] bg-slate-100 shadow-lg">
       
       {image ? (

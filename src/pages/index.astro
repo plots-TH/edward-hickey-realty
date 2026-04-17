@@ -11,10 +11,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <div class="relative h-[70vh] md:h-[85vh] w-full overflow-hidden rounded-[2rem] md:rounded-[4rem] bg-[#575757] shadow-2xl animate-reveal">
         
         <!-- Image with subtle zoom -->
-       <img 
-          src="/images/edward_headshot.jpg" 
-          alt="" 
-          class="w-full h-full object-cover grayscale brightness-[0.6] transition-transform duration-[3000ms] hover:scale-105""")/>
+       <img
+  src="/images/edward_headshot.jpg"
+  alt=""
+  class="w-full h-full object-cover grayscale brightness-[0.6] transition-transform duration-[3000ms] hover:scale-105"
+/>
 
 
         <!-- Overlay Text -->
@@ -29,12 +30,20 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           </h1>
 
           <div class="flex flex-col sm:flex-row gap-6 animate-reveal delay-2" style="animation-delay: 0.6s;">
-            <a href="/listings" class="bg-white text-black px-12 py-4 text-[10px] uppercase tracking-[0.2em] font-bold hover:bg-black hover:text-white transition-all duration-500 rounded-full">
-              Explore Portfolio
-            </a>
-            <a href="/contact" class="backdrop-blur-md bg-white/10 border border-white/30 text-white px-12 py-4 text-[10px] uppercase tracking-[0.2em] font-bold hover:bg-white hover:text-black transition-all duration-500 rounded-full">
-              Private Inquiry
-            </a>
+            <a
+  href="/listings"
+  onclick="window.trackLeadEvent('select_content', { type: 'explore_portfolio' })"
+  class="bg-white text-black px-12 py-4 text-[10px] uppercase tracking-[0.2em] font-bold hover:bg-black hover:text-white transition-all duration-500 rounded-full"
+>
+  Explore Portfolio
+</a>
+<a
+  href="/contact"
+  onclick="window.trackLeadEvent('generate_lead', { type: 'homepage_inquiry_click' })"
+  class="backdrop-blur-md bg-white/10 border border-white/30 text-white px-12 py-4 text-[10px] uppercase tracking-[0.2em] font-bold hover:bg-white hover:text-black transition-all duration-500 rounded-full"
+>
+  Private Inquiry
+</a>
           </div>
         </div>
       </div>
