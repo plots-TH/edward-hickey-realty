@@ -91,6 +91,7 @@ const { title = "Edward Hickey | Real Estate" } = Astro.props;
       }
 
       function setupAnalyticsTracking() {
+        console.log('analytics tracking bound');
         if (window.__analyticsTrackingBound) return;
         window.__analyticsTrackingBound = true;
 
@@ -104,6 +105,8 @@ const { title = "Edward Hickey | Real Estate" } = Astro.props;
             target.getAttribute('href') ||
             target.getAttribute('data-track-destination') ||
             undefined;
+
+            console.log('clicked tracked element', eventName, type, destination);
 
           window.trackLeadEvent(eventName, {
             type,

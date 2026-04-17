@@ -25,7 +25,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           <div class="flex flex-col sm:flex-row gap-6 animate-reveal delay-2" style="animation-delay: 0.6s;">
             <a
               href="/listings"
-              onclick="event.preventDefault(); window.trackLeadEvent('select_content', { type: 'explore_portfolio', destination: '/listings' }); setTimeout(() => { window.location.href='/listings'; }, 150);"
+              data-track-event="select_content"
+              data-track-type="explore_portfolio"
               class="bg-white text-black px-12 py-4 text-[10px] uppercase tracking-[0.2em] font-bold hover:bg-black hover:text-white transition-all duration-500 rounded-full"
             >
               Explore Portfolio
@@ -33,7 +34,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
             <a
               href="/contact"
-              onclick="event.preventDefault(); window.trackLeadEvent('generate_lead', { type: 'homepage_inquiry_click', destination: '/contact' }); setTimeout(() => { window.location.href='/contact'; }, 150);"
+              data-track-event="generate_lead"
+              data-track-type="homepage_inquiry_click"
               class="backdrop-blur-md bg-white/10 border border-white/30 text-white px-12 py-4 text-[10px] uppercase tracking-[0.2em] font-bold hover:bg-white hover:text-black transition-all duration-500 rounded-full"
             >
               Private Inquiry
